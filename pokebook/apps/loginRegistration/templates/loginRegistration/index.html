@@ -1,0 +1,135 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Login & Registration</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+  
+    <script src="{% static 'loginRegistration/js/validations.js' %}"></script>
+</head>
+<body>
+    <div class="container bg-light">
+            <div class='row text-center border-bottom'>
+                <div class="col-lg">
+                    <p class='h1'>Welcome to POKEBOOK</p>
+                </div>
+                    
+        
+            </div>
+        <div class="row">
+            <div class="col-md border-right"> <!---Registration Div-->
+                <p class='h1'>Registration</p>
+                {% if messages %}
+                <ul class="messages text-danger">
+                    {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                <form action='/users/create' method="POST" id="reg_form">
+                    {% csrf_token %}
+                    <p id='fname_check' class="text-danger"></p>
+                    <div class="form-group form-row">
+                        <label for="first_name" class="col-sm-3 col-form-label">First Name</label>
+                        <input type="text" class="form-control col-lg" name="first_name" id="first_name">
+                    </div>
+                    <p id='lname_check' class="text-danger"></p>
+                    <div class="form-group form-row">
+                        <label for="last_name" class="col-sm-3 col-form-label">Last Name</label>
+                        <input type="text" class="form-control col-lg" name="last_name" id="last_name">
+                    </div>
+                    <p id='email_check' class="text-danger"></p>
+                    <div class="form-group form-row">
+                        <label class="col-sm-3 col-form-label">Email</label>
+                        <input type="text" class="form-control col-lg" name="email" id="id_email">
+                    </div>
+                    <p id='alias_check' class="text-danger"></p>
+                    <div class="form-group form-row">
+                        <label for="alias" class="col-sm-3 col-form-label">Alias</label>
+                        <input type="text" class="form-control col-lg" name="alias" id="alias">
+                    </div>
+                    <p id='bday_check' class="text-danger"></p>
+                    <div class="form-group form-row">
+                        <label for="birth_date_form" class="col-sm-3 col-form-label control-label">Birth Day</label>
+                        <input type="text" class="form-control col-lg" name="birth_date_form" id="birth_date_form">
+                        <input type="hidden" name='birth_date' id='birth_date'>
+                    </div>
+                    <p id='password_check' class="text-danger"></p>
+                    <p id='passwordlength_check' class="text-danger"></p>
+                    <div class="form-group form-row">
+                        <label for="password" class="col-sm-3 col-form-label">Password</label>
+                        <input type="password" class="form-control col-lg pword" name="password" id="password">
+                    </div>
+                    <p id='confpassword_check' class="text-danger"></p>
+                    <div class="form-group form-row">
+                        <label for="confpassword" class="col-sm-3 col-form-label">Confirm PW</label>
+                        <input type="password" class="form-control col-lg pword" name="confpassword" id="confpassword">
+                    </div>
+                    <p id='form_check' class="text-danger"></p>
+                    <button type="submit" id = "regbutton" class="btn btn-primary" disabled>Register</button>
+                </form>
+            </div>
+            <div class="col-md"><!---Login Div-->
+                <p class='h1'>Login</p>
+                <form action='/users/login' method="POST">
+                    {% csrf_token %}
+                    <div class="form-group form-row">
+                        <label class="col-sm-3 col-form-label">Email</label>
+                        <input type="text" class="form-control col-lg" name="email">
+                    </div>
+                    <div class="form-group form-row">
+                        <label class="col-sm-3 col-form-label">Password</label>
+                        <input type="password" class="form-control col-lg" name="password">
+                    </div>
+                    <button type="submit" class = 'btn btn-primary float-right'>Login</button>
+                
+                
+                </form>
+            </div>
+        </div>
+
+    </div>
+        
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://momentjs.com/downloads/moment-with-locales.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            
+            add_validations()
+            
+
+            var date_input=$('input[name="birth_date_form"]'); //our date input has the name "releaseDate"
+            var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+            var options={
+            format: 'MM dd yyyy',
+            
+            container: container,
+            todayHighlight: true,
+            autoclose: true,
+            };
+            date_input.datepicker(options)
+            date_input.on('changeDate', function(e){
+                $('#birth_date').val(moment(e.date).format('YYYY-MM-DD'))
+            })
+            
+            
+
+            
+
+
+        })
+    </script>
+</body>
+</html>
